@@ -30,13 +30,23 @@ public class DateServer{
 						DataInputStream dis = new DataInputStream(socket.getInputStream());
 						
 						// dos.writeUTF("Jonas Ariel Passos de Medeiros");
+						dos.writeUTF("Esta é uma calculadora de números fatoriais!\n" +
+						"Envie seu número inteiro e receberá como resposta o fatorial deste número!");
 						while (true) {
 							String mensagemRecebida = dis.readUTF();
 							System.out.println(socket.getInetAddress()
 									+ ":" + socket.getPort()
 									+ "- Cliente enviou: " + mensagemRecebida);
-							Scanner teclado = new Scanner(System.in);
-							dos.writeUTF(teclado.nextLine());
+							// Scanner teclado = new Scanner(System.in);
+							// dos.writeUTF(teclado.nextLine());
+							try {
+								Integer num = Integer.parseInt(mensagemRecebida);
+								num = fact(num);
+								dos.writeUTF("Servidor responde: " + num);
+							} catch (Exception e) {
+								// TODO: handle exception
+								dos.writeUTF("Servidor responde: Número enviado em formato incorreto (ou outro erro: )" + e.getStackTrace());
+							}
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -48,5 +58,17 @@ public class DateServer{
 		catch (IOException ioe) {
 				System.err.println(ioe);
 		}
+	}
+
+	private static Integer fact(Integer x){
+		if (x == 1 || x == 0){
+			return 1;
+		}
+		Integer y=1;
+		for (int i=0; i< x; i++){
+			y*=(x-i);
+		}
+		return y;
+
 	}
 }

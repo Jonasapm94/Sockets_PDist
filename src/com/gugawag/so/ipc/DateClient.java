@@ -23,6 +23,7 @@ public class DateClient {
 
 			DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
 			DataInputStream dis = new DataInputStream(sock.getInputStream());
+			System.out.println("Servidor me respondeu: "+dis.readUTF());
 
 			while (true) {
 				Scanner teclado = new Scanner(System.in);
