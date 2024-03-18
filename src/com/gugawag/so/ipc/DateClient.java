@@ -10,6 +10,7 @@ package com.gugawag.so.ipc;
  */ 
 
 import java.net.*;
+import java.util.Scanner;
 import java.io.*;
 
 public class DateClient {
@@ -17,15 +18,18 @@ public class DateClient {
 		try {
 			// this could be changed to an IP name or address other than the localhost
 			Socket sock = new Socket("localhost",6013);
-			InputStream in = sock.getInputStream();
-			BufferedReader bin = new BufferedReader(new InputStreamReader(in));
 
 			System.out.println("=== Cliente iniciado ===\n");
 
-			String line = bin.readLine();
-			System.out.println("O servidor me disse:" + line);
-				
-			sock.close();
+			DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
+			DataInputStream dis = new DataInputStream(sock.getInputStream());
+
+			while (true) {
+				Scanner teclado = new Scanner(System.in);
+				dos.writeUTF(teclado.nextLine());
+				String mensagemRecebida = dis.readUTF();
+				System.out.println("Servidor me respondeu: "+mensagemRecebida);
+			}
 		}
 		catch (IOException ioe) {
 				System.err.println(ioe);
